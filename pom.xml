@@ -1,23 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>qaGirish</groupId>
-  <artifactId>JenkinsIntegrate</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>qaGirish</groupId>
+	<artifactId>JenkinsIntegrate</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>JenkinsIntegrate</name>
-  <url>http://maven.apache.org</url>
+	<name>JenkinsIntegrate</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
+	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<testtags>
+			@adopted and @jenkinstest and @regression and(@smoke or
+			@sanity)
+		</testtags>
 	</properties>
 
-  <dependencies>
-    	<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
@@ -25,12 +29,14 @@
 			<scope>test</scope>
 		</dependency>
 
+
 		<dependency>
-			<groupId>info.cukes</groupId>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-picocontainer</artifactId>
-			<version>1.2.5</version>
+			<version>3.0.2</version>
 			<scope>test</scope>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -42,17 +48,22 @@
 		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
 			<version>4.12</version> <scope>test</scope> </dependency> -->
 
+		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
 		<dependency>
-			<groupId>info.cukes</groupId>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>1.2.5</version>
+			<version>3.0.2</version>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
 		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-jvm-deps</artifactId>
-			<version>1.0.5</version>
-			<scope>test</scope>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>3.0.2</version>
 		</dependency>
+
+
 		<!-- <dependency> <groupId>info.cukes</groupId> <artifactId>cucumber-junit</artifactId> 
 			<version>1.2.5</version> <scope>test</scope> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
@@ -63,7 +74,7 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.14.3</version>
-			
+
 		</dependency>
 
 
@@ -71,17 +82,14 @@
 
 		<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-testng -->
 		<dependency>
-			<groupId>info.cukes</groupId>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-testng</artifactId>
-			<version>1.2.5</version>
+			<version>3.0.2</version>
 			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
+
+		<!-- <exclusions> <exclusion> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+			</exclusion> </exclusions> </dependency> -->
 
 
 
@@ -96,18 +104,8 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.vimalselvam/cucumber-extentsreport -->
-		<dependency>
-			<groupId>com.vimalselvam</groupId>
-			<artifactId>cucumber-extentsreport</artifactId>
-			<version>3.0.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-		<dependency>
-			<groupId>com.aventstack</groupId>
-			<artifactId>extentreports</artifactId>
-			<version>4.0.4</version>
-		</dependency>
+
+
 
 
 		<dependency>
@@ -138,7 +136,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<projectName>BDD-TEST-REPORT1</projectName>
+							<projectName>BDD-TEST-REPORT</projectName>
 
 							<outputDirectory>${project.build.directory}/cucumber-JVM-reports</outputDirectory>
 							<!-- to generate better report-similar to Jenkin report,maven-cucumber-reporting 
@@ -170,16 +168,19 @@
 							<glue>
 								<!-- <package>com.automation.common</package> -->
 								<package>stepdefinitions</package>
-								
+
 							</glue>
-							<featuresDirectory>src/test/java/features</featuresDirectory>
+							<featuresDirectory>src/test/resources/features/testcomponents</featuresDirectory>
 							<cucumberOutputDir>target/cucumber-parallel/json</cucumberOutputDir>
 							<format>json</format>
 							<strict>true</strict>
 							<!-- CucumberOptions.monochrome property -->
 							<monochrome>true</monochrome>
 							<tags>
-								<tag>@adopted</tag>
+								<tag>${testtags}</tag>
+
+								<!-- <tag></tag> -->
+
 								<!-- <tag>~@billing</tag> <tag>@important</tag> -->
 							</tags>
 
@@ -191,7 +192,7 @@
 								scheme is 'pattern'. -->
 
 							<namingPattern>Parallel{c}IT</namingPattern>
-
+							<filterFeaturesByTags>true</filterFeaturesByTags>
 							<parallelScheme>FEATURE</parallelScheme>
 						</configuration>
 					</execution>
@@ -214,19 +215,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
-				<!-- <configuration> <suiteXmlFiles> <suiteXmlFile>testng.xml</suiteXmlFile> 
-					</suiteXmlFiles> </configuration> -->
-
-				<!-- <configuration> <parallel>classes</parallel> <threadCount>5</threadCount> 
-					<includes> <include>**/*IT.class</include> </includes> </configuration> -->
-
-
 				<configuration>
-					<forkCount>3</forkCount>
+				<forkCount>3</forkCount>
 					<reuseForks>true</reuseForks>
 					<includes>
 						<include>**/Parallel*IT.class</include>
-
 					</includes>
 				</configuration>
 			</plugin>
@@ -303,6 +296,6 @@
 			</plugins>
 
 		</pluginManagement>
-</build>
+	</build>
 </project>
   

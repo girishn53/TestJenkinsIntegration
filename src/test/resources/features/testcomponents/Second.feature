@@ -1,5 +1,5 @@
-@adopted
-Feature: This is first feature file
+@adopted @jenkinstest @regression @smoke @sanity
+Feature: This is second feature file
 
   @tag2
   Scenario: testing second feature file

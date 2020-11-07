@@ -1,4 +1,4 @@
-@adopted
+@adopted @jenkinstest @regression @smoke @sanity
 Feature: This is first feature file
 
   @tag1
